@@ -21,6 +21,10 @@ And yes, at 2000 ft you get the **1202 alarm**.
   </tr>
   <tr>
     <td align="center"><img src="docs/images/after-rset.png" width="320"><br><sub>After RSET: back to V06 N60</sub></td>
+    <td align="center"><img src="docs/images/p66.png" width="320"><br><sub>P66 at 148 ft: slow the descent, keep it level</sub></td>
+  </tr>
+  <tr>
+    <td align="center"><img src="docs/images/landed.png" width="320"><br><sub>Touchdown at 1.0 ft/s with 32% fuel: THE EAGLE HAS LANDED</sub></td>
     <td align="center"><img src="docs/images/crash.png" width="320"><br><sub>Too fast: LM lost</sub></td>
   </tr>
   <tr>
@@ -115,3 +119,5 @@ wilibsp/           FreeWili 2 board support, pinned submodule
 Built on [wilibsp](https://github.com/freewili/wilibsp), the FreeWili 2 board
 support package. What was and was not checked on real hardware is recorded in
 [docs/2026-11-18-lander-e2e.md](docs/2026-11-18-lander-e2e.md).
+
+<p align="center"><img src="docs/images/about.png" width="320" alt="About screen"></p>
