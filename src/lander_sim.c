@@ -17,6 +17,13 @@
 
 static float clampf(float v, float lo, float hi) { return v < lo ? lo : (v > hi ? hi : v); }
 
+float lander_self_right(float pitch)
+{
+    float m = fabsf(pitch) - LANDER_RIGHTING_DEADZONE;
+    if (m <= 0.0f) return 0.0f;
+    return pitch > 0.0f ? m : -m;
+}
+
 void lander_reset(lander_t *s)
 {
     *s = (lander_t){0};
@@ -95,6 +102,10 @@ void lander_step(lander_t *s, float dt, float thr_target, float pitch_target)
     if (s->outcome != LANDER_FLYING) return;
     s->t += dt;
     if (s->alarm_age >= 0.0f) s->alarm_age += dt;
+
+    // Bottom-heavy: with the throttle at minimum, small pitch commands are
+    // ignored and the LM rights itself (larger ones are reduced by the deadzone).
+    if (thr_target <= LANDER_THR_MIN) pitch_target = lander_self_right(pitch_target);
 
     // Actuators: throttle lag, attitude rate limit, no thrust without fuel.
     thr_target = clampf(thr_target, LANDER_THR_MIN, 1.0f);

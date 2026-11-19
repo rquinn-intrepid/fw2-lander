@@ -29,6 +29,7 @@
 #define LANDER_BAILOUT_S   0.6f    // guidance frozen while the AGC restarts
 #define LANDER_ALARM_S     4.0f    // V05N09 alarm display time
 #define LANDER_P66_H       45.7f   // 150 ft: switch to rate-of-descent
+#define LANDER_RIGHTING_DEADZONE 0.2094f // 12 deg: at min throttle, smaller pitch commands are ignored
 
 typedef enum { LANDER_FLYING = 0, LANDER_LANDED, LANDER_CRASHED } lander_outcome_t;
 
@@ -62,6 +63,9 @@ bool  lander_ttf_solve(float jdg, float adg, float vg, float vdg,
 void  lander_guidance(lander_t *s, float dt);
 // Advance physics. thr_target 0..1 (clamped up to THR_MIN), pitch_target rad.
 void  lander_step(lander_t *s, float dt, float thr_target, float pitch_target);
+// Bottom-heavy steering at minimum throttle: |pitch| <= deadzone -> 0,
+// larger commands reduced by the deadzone. Applied inside lander_step().
+float lander_self_right(float pitch);
 // True while the alarm display should be up (alarm fired, < ALARM_S old).
 bool  lander_alarm_active(const lander_t *s);
 

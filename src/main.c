@@ -371,7 +371,7 @@ int main(void)
         if (agentio) agentio_task();
         fw2_app_recovery_sleep_ms(50);
     }
-    DIAG("lander: v002 up, imu=%d agentio=%d\n", s_have_imu, agentio);
+    DIAG("lander: v003 up, imu=%d agentio=%d\n", s_have_imu, agentio);
 
     lander_t s;
     lander_reset(&s);

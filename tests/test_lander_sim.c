@@ -67,8 +67,28 @@ static void test_free_fall_crashes(void)
     CHECK(s.outcome == LANDER_CRASHED, "min throttle should crash");
 }
 
+static void test_self_right(void)
+{
+    const float d8 = 8.0f / 57.29578f;
+    CHECK(lander_self_right(d8) == 0.0f, "small pitch ignored");
+    CHECK(lander_self_right(-0.5f) < 0.0f, "sign kept");
+
+    // Throttle at minimum, hand 8 deg off: the LM levels out.
+    lander_t s; lander_reset(&s);
+    s.pitch = d8;
+    for (int i = 0; i < 100; i++) lander_step(&s, 0.01f, 0.0f, d8);
+    CHECK(fabsf(s.pitch) < 0.001f, "min throttle should level, pitch %f", (double)s.pitch);
+
+    // Throttle up: the same 8 deg is honoured.
+    lander_reset(&s);
+    s.pitch = 0.0f;
+    for (int i = 0; i < 100; i++) lander_step(&s, 0.01f, 1.0f, d8);
+    CHECK(fabsf(s.pitch - d8) < 0.001f, "powered LM follows pitch, %f", (double)s.pitch);
+}
+
 int main(void)
 {
+    test_self_right();
     test_ttf_root();
     test_flights();
     test_free_fall_crashes();
