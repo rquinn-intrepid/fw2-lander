@@ -25,6 +25,7 @@
 #define BE(c) ((uint16_t)((((c) >> 8) & 0xFF) | (((c) & 0xFF) << 8)))
 #define RAD2DEG 57.29578f
 #define M2FT    3.28084f
+#define KEY_FRESH_MS 1200   // > the keyboard's ~500 ms held-button report cadence
 
 // Colours (RGB565 -> wire order)
 #define C_BLACK   BE(0x0000)
@@ -370,7 +371,7 @@ int main(void)
         if (agentio) agentio_task();
         fw2_app_recovery_sleep_ms(50);
     }
-    DIAG("lander: v001 up, imu=%d agentio=%d\n", s_have_imu, agentio);
+    DIAG("lander: v002 up, imu=%d agentio=%d\n", s_have_imu, agentio);
 
     lander_t s;
     lander_reset(&s);
@@ -402,9 +403,9 @@ int main(void)
             if (ev.btn == UARTKBD_BTN_RED) red_edge = true;
             if (ev.btn == UARTKBD_BTN_NAV_CENTER) nav_trim = 0.0f;
         }
-        bool green_held = uartkbd_button_down_fresh(UARTKBD_BTN_GREEN, 300);
-        if (uartkbd_button_down_fresh(UARTKBD_BTN_NAV_LEFT, 300))  nav_trim -= 0.5f * dt;
-        if (uartkbd_button_down_fresh(UARTKBD_BTN_NAV_RIGHT, 300)) nav_trim += 0.5f * dt;
+        bool green_held = uartkbd_button_down_fresh(UARTKBD_BTN_GREEN, KEY_FRESH_MS);
+        if (uartkbd_button_down_fresh(UARTKBD_BTN_NAV_LEFT, KEY_FRESH_MS))  nav_trim -= 0.5f * dt;
+        if (uartkbd_button_down_fresh(UARTKBD_BTN_NAV_RIGHT, KEY_FRESH_MS)) nav_trim += 0.5f * dt;
         if (nav_trim > LANDER_PITCH_MAX) nav_trim = LANDER_PITCH_MAX;
         if (nav_trim < -LANDER_PITCH_MAX) nav_trim = -LANDER_PITCH_MAX;
 

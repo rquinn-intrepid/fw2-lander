@@ -21,6 +21,6 @@ add_executable(lander src/main.c src/lander_sim.c)
 target_link_libraries(lander PRIVATE freewili2_bsp)
 fw2_display_app(lander
     POWER_ZONES DISPLAY SENSORS RGB_LEDS
-    VERSION 001
+    VERSION 002
     DESCRIPTION "Lunar landing game: Luminary 099 guidance on a DSKY, tilt to steer, green throttle"
     REPOSITORY "https://github.com/rquinn-intrepid/fw2-lander")
